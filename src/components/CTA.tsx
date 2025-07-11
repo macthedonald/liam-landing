@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 
+// TypeForm type declaration
+declare global {
+  interface Window {
+    tf?: {
+      push: (fn: () => void) => void;
+      createPopup: (id: string, options: any) => void;
+      popup?: {
+        open: () => void;
+      };
+    };
+  }
+}
+
 const CTA = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   
@@ -26,6 +39,19 @@ const CTA = () => {
     script.src = "//embed.typeform.com/next/embed.js";
     script.async = true;
     document.body.appendChild(script);
+    
+    // Initialize Typeform popup configuration
+    window.tf = window.tf || [];
+    window.tf.push(function() {
+      window.tf.createPopup("01JZVMGHZ0ERD8907A2MCRC0VG", {
+        hideHeaders: true,
+        hideFooter: true,
+        opacity: 95,
+        buttonText: "Request Early Access",
+        buttonColor: "#6366F1",
+        buttonTextColor: "#FFFFFF"
+      });
+    });
     
     return () => {
       if (ctaRef.current) {
@@ -62,18 +88,13 @@ const CTA = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <div className="w-full sm:w-auto">
-              <div 
-                data-tf-live="01JZVMGHZ0ERD8907A2MCRC0VG" 
-                data-tf-button-text="Request Early Access"
-                data-tf-button-color="#6366F1"
-                data-tf-button-text-color="#FFFFFF"
-                className="button-primary group flex items-center justify-center w-full sm:w-auto cursor-pointer"
-              >
-                Request Early Access
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </div>
-            </div>
+            <button 
+              onClick={() => window.tf?.popup?.open()}
+              className="button-primary group flex items-center justify-center w-full sm:w-auto cursor-pointer"
+            >
+              Request Early Access
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
       </div>
