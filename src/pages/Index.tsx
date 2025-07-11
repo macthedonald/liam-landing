@@ -1,5 +1,6 @@
 
 import React, { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/next"
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import HumanoidSection from "@/components/HumanoidSection";
